@@ -27,7 +27,7 @@ node index.js
 Run as a daemon
 
 ```
-forver index.js
+forver start index.js
 ```
 
 ### Usage
