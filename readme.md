@@ -15,7 +15,20 @@ Clone the Repo
 
 cd into the folder
 
+```
 npm install
+```
+Run in Debug Mode
+
+```
+node index.js
+```
+
+Run as a daemon
+
+```
+forver index.js
+```
 
 ### Usage
 
