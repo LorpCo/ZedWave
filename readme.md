@@ -16,21 +16,29 @@ npm install
 
 ### Usage
 
+Fetch all of the nodes
 
+```
 GET server:3000/api/nodes 
+```
 
-Lists all nodes available 
+Fetch a single node 
 
+```
+GET server:3000/api/nodes/:nodeid
+```
+
+Add a node to your zwave network
+
+```
 POST server:3000/api/nodes/add
 
-Place the controller into inclusion mode
-
-POST server:3000/api/nodes/remove
+```
 
 Remove a node
 
-GET server:3000/api/nodes/:nodeId 
-
-List a single node
+```
+POST server:3000/api/nodes/remove
+```
 
 
