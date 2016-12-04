@@ -8,6 +8,9 @@ https://github.com/OpenZWave/node-openzwave-shared/blob/master/README-ubuntu.md
 
 Follow the open zwave-shared install instructions 
 
+
+You will need to have mongodb installed and availabe. 
+
 Clone the Repo
 
 cd into the folder 
