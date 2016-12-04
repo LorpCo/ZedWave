@@ -31,6 +31,12 @@ Fetch a single node
 GET server:3000/api/nodes/:nodeid
 ```
 
+Fetch a the classes for a node
+
+```
+GET server:3000/api/nodes/:nodeid/classes
+```
+
 Add a node to your zwave network
 
 ```
