@@ -35,25 +35,28 @@ forver start index.js
 Fetch all of the nodes
 
 ```
-GET server:3000/api/nodes
+GET /api/nodes
 ```
 
 Fetch a single node
-
 ```
-GET server:3000/api/nodes/:nodeid
+GET /api/nodes/:nodeid
 ```
 
+Delete a single node
+```
+DELETE /api/nodes/:nodeid
+```
 Fetch a the classes for a node
 
 ```
-GET server:3000/api/nodes/:nodeid/classes
+GET /api/nodes/:nodeid/classes
 ```
 
 Add a node to your zwave network
 
 ```
-POST server:3000/api/nodes/add
+POST /api/nodes/add
 ```
 
 Remove a node

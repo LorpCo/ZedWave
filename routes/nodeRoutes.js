@@ -6,6 +6,11 @@ module.exports = function(router) {
  'use strict';
 
  	// GET root path to fetch all nodes
+  router.route('/')
+    .get(function (req, res) {
+       res.sendFile(__dirname + '/dist/index.html');
+   });
+
 
  	router.route('/api/nodes')
 		.get(function(req, res, next) {
@@ -24,7 +29,18 @@ module.exports = function(router) {
           res.send(err)
         res.json(node)
       });
-		});
+		})
+
+    .delete(function(req, res) {
+      ZedNode.remove({
+        _id: req.params.nodeid
+      }, function(err, node) {
+        if (err)
+          res.send(err)
+        res.json({message: 'Deleted Node'})
+      });
+    });
+
 	// GET Node Classes
 	router.route('/api/nodes/:nodeid/classes')
 		.get(function(req,res,next){
