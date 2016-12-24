@@ -1,2 +1,3 @@
-var server = require('./initializers/server');
+'use strict';
 
+let server = require('./initializers/server');

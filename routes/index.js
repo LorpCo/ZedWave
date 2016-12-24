@@ -1,10 +1,10 @@
-var express = require('express');
-
-module.exports = function(app){
 'use strict';
 
+let express = require('express');
+
+module.exports = function(app) {
 // get an instance of the express Router
-var router = express.Router();
+  let router = express.Router();
 
 
 // ROUTES FOR OUR API
@@ -15,6 +15,4 @@ var router = express.Router();
 require('./nodeRoutes')(router);
 
 app.use('/', router);
-
-
 };

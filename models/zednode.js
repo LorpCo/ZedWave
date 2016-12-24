@@ -1,8 +1,8 @@
+'use strict';
 
-var mongoose     = require('mongoose');
-var Schema       = mongoose.Schema;
-
-var ZedNodeSchema = new Schema({
+const mongoose = require('mongoose');
+const db = mongoose.connect('mongodb://localhost:27017/nodes');
+const schema = mongoose.Schema({
   nodeid: String,
   name: String,
   manufacturer: String,
@@ -14,8 +14,8 @@ var ZedNodeSchema = new Schema({
   name: String,
   loc: String,
   classes: Object,
-  ready: Boolean
+  ready: Boolean,
 });
 
-
-module.exports = mongoose.model('ZedNode', ZedNodeSchema);
+const ZedNode = db.model('ZedNode', schema);
+module.exports = ZedNode;

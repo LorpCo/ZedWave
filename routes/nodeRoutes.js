@@ -1,18 +1,18 @@
 
 nodeServer = require('../lib/zwaveServer');
-var ZedNode = require('../models/zednode');
+let ZedNode = require('../models/zednode');
 
 module.exports = function(router) {
  'use strict';
 
- 	// GET root path to fetch all nodes
+  // GET root path to fetch all nodes
   router.route('/')
-    .get(function (req, res) {
+    .get(function(req, res) {
        res.sendFile(__dirname + '/dist/index.html');
-   });
+     });
 
 
- 	router.route('/api/nodes')
+  router.route('/api/nodes')
 		.get(function(req, res, next) {
       ZedNode.find(function(err, nodes) {
            if (err)
@@ -22,46 +22,45 @@ module.exports = function(router) {
        });
 		});
     // GET fetch a single node
- 	router.route('/api/nodes/:nodeid')
+  router.route('/api/nodes/:nodeid')
 		.get(function(req, res, next) {
-      ZedNode.findById(req.params.nodeid, function(err, node){
+      ZedNode.findById(req.params.nodeid, function(err, node) {
         if (err)
-          res.send(err)
-        res.json(node)
+          res.send(err);
+        res.json(node);
       });
 		})
 
     .delete(function(req, res) {
       ZedNode.remove({
-        _id: req.params.nodeid
+        _id: req.params.nodeid,
       }, function(err, node) {
         if (err)
-          res.send(err)
-        res.json({message: 'Deleted Node'})
+        res.send(err);
+        res.json({message: 'Deleted Node'});
       });
     });
 
 	// GET Node Classes
 	router.route('/api/nodes/:nodeid/classes')
-		.get(function(req,res,next){
-      ZedNode.findById(req.params.nodeid, function(err, node){
+		.get(function(req, res, next) {
+      ZedNode.findById(req.params.nodeid, function(err, node) {
         if (err)
-          res.send(err)
-        res.json(node.classes)
+        res.send(err);
+        res.json(node.classes);
       });
 		});
 
 	// GET Node Configuration
 	router.route('/api/nodes/:nodeid/configuration')
-		.post(function(req,res,next){
-      ZedNode.findById(req.params.nodeid, function(err, node){
+		.post(function(req, res, next) {
+      ZedNode.findById(req.params.nodeid, function(err, node) {
         if (err)
-          res.send(err)
+        res.send(err);
         nodeServer.connection.requestAllConfigParams(node.nodeid);
-  			console.log('refreshing node info');
-  			res.send(200);
+        console.log('refreshing node info');
+        res.send(200);
       });
-
 		});
 	// POST to add a node
 	router.route('/api/nodes/add')
@@ -79,36 +78,48 @@ module.exports = function(router) {
 		});
 	// POST to change a class parameter
 	router.route('/api/nodes/:nodeid/sendCommand/:commandClass/:instance/:index/:value')
-		.post(function(req,res,next) {
-			if(req.params.value == "true"){
-				nodeServer.connection.setValue(req.params.nodeid,  parseInt(req.params.commandClass),  parseInt(req.params.instance),  parseInt(req.params.index), true);
-				console.log('turning on')
+		.post(function(req, res, next) {
+			if(req.params.value == 'true') {
+				nodeServer.connection.setValue(
+          req.params.nodeid,
+          parseInt(req.params.commandClass),
+          parseInt(req.params.instance),
+          parseInt(req.params.index), true);
+          console.log('turning on');
 			}
-			else if(req.params.value == "false"){
-				nodeServer.connection.setValue(req.params.nodeid,  parseInt(req.params.commandClass),  parseInt(req.params.instance),  parseInt(req.params.index), false);
-				console.log('turning off')
-
+			if(req.params.value == 'false') {
+				nodeServer.connection.setValue(req.params.nodeid,
+        parseInt(req.params.commandClass),
+        parseInt(req.params.instance),
+        parseInt(req.params.index), false);
+				console.log('turning off');
 			}
-			else if(req.params.value == NaN && req.params.value != true && req.params.value != false){
-				nodeServer.connection.setValue(req.params.nodeid,  parseInt(req.params.commandClass),  parseInt(req.params.instance),  parseInt(req.params.index), req.params.value);
-				console.log('sending unknown command DANGER!!')
+      if(req.params.value == NaN && req.params.value != true &&
+               req.params.value != false) {
+				nodeServer.connection.setValue(req.params.nodeid,
+          parseInt(req.params.commandClass),
+          parseInt(req.params.instance),
+          parseInt(req.params.index),
+          req.params.value);
+          console.log('sending unknown command DANGER!!');
+			} else {
+				nodeServer.connection.setValue(req.params.nodeid,
+          parseInt(req.params.commandClass),
+          parseInt(req.params.instance),
+          parseInt(req.params.index),
+          parseInt(req.params.value));
+				console.log('sending unknown command DANGER!!');
 			}
-			else {
-				nodeServer.connection.setValue(req.params.nodeid,  parseInt(req.params.commandClass),  parseInt(req.params.instance),  parseInt(req.params.index), parseInt(req.params.value));
-				console.log('sending unknown command DANGER!!')
-			}
-
-
-
-
-			console.log('sending command')
-			res.send(200)
+			console.log('sending command');
+			res.send(200);
 		});
 
 	router.route('/api/nodes/:nodeid/setConfig/:paramId/:paramValue/:size')
-		.post(function(req,res,next) {
-			nodeServer.connection.setConfigParam(parseInt(req.params.nodeId), parseInt(req.params.paramId), parseInt(req.params.paramValue), parseInt(req.params.size));
-			res.send(200)
+		.post(function(req, res, next) {
+			nodeServer.connection.setConfigParam(parseInt(req.params.nodeId),
+                                           parseInt(req.params.paramId),
+                                           parseInt(req.params.paramValue),
+                                           parseInt(req.params.size));
+			res.send(200);
 		});
-
 };
