@@ -32,6 +32,12 @@ forver start index.js
 
 ### Usage
 
+
+Browse to localhost:3000 to view the swagger docs.
+
+
+### Sample routes
+
 Fetch all of the nodes
 
 ```
