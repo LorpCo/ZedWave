@@ -1,10 +1,9 @@
+'use strict';
 
-nodeServer = require('../lib/zwaveServer');
+let nodeServer = require('../lib/zwaveServer');
 let ZedNode = require('../models/zednode');
 
 module.exports = function(router) {
- 'use strict';
-
   // GET root path to fetch all nodes
   router.route('/')
     .get(function(req, res) {
