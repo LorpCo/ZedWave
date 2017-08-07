@@ -1,7 +1,13 @@
-'use strict';
+'use strict'
 
-const mongoose = require('mongoose');
-const db = mongoose.connect('mongodb://localhost:27017/nodes');
+const mongoose = require('mongoose')
+
+mongoose.connect('mongodb://localhost:27017/nodes')
+mongoose.Promise = global.Promise
+
+let db = mongoose.connection
+
+
 const schema = mongoose.Schema({
   nodeid: String,
   name: String,
@@ -11,11 +17,12 @@ const schema = mongoose.Schema({
   producttype: String,
   productid: String,
   type: String,
-  name: String,
   loc: String,
-  classes: Object,
+  classes: {},
+  lorpState: {},
   ready: Boolean,
-});
+})
 
-const ZedNode = db.model('ZedNode', schema);
-module.exports = ZedNode;
+const ZedNode = db.model('ZedNode', schema)
+
+export default ZedNode
