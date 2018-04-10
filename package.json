@@ -22,10 +22,12 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "minimist": "*",
+    "moment": "^2.22.0",
     "mongoose": "^4.13.11",
     "npm": "^5.8.0",
     "openzwave-shared": "^1.4.1",
-    "resource-router-middleware": "^0.7.0"
+    "resource-router-middleware": "^0.7.0",
+    "winston": "^3.0.0-rc4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

@@ -1,7 +1,7 @@
 import eventHandler from './eventHandler'
 import ZWave from 'openzwave-shared'
 import ZedNode from '../models/zednode'
-
+import logger from './logger'
 
 export const zwave = new ZWave({
   'ConsoleOutput': false,
@@ -11,24 +11,23 @@ export const zwave = new ZWave({
 
 // Driver ready event
 zwave.on('driver ready', (homeid) => {
-  console.log('scanning homeid=0x%s...', homeid.toString(16))
+  logger.info('scanning homeid=0x%s...', homeid.toString(16))
 })
 
 // Driver failed event
 zwave.on('driver failed', () => {
-  console.log('failed to start driver')
+  logger.info('failed to start driver')
   zwave.disconnect()
   process.exit()
 })
 
 // Event when a node is added
 zwave.on('node added', (nodeid) => {
-  console.log('=================== NODE ADDED! ====================')
   ZedNode.findOne({ 'nodeid': nodeid }, (err, node) => {
-    console.log(`Adding Node: ${ nodeid}`)
+    logger.info(`Adding Node: ${ nodeid}`)
 
     if (node) {
-      console.log(node._id)
+      logger.info(node._id)
     } else {
       let newnode = new ZedNode()
 
@@ -36,16 +35,16 @@ zwave.on('node added', (nodeid) => {
       newnode.ready = false
       newnode.save((err) => {
         if (err) {
-          console.log('error saving node')
+          logger.info('error saving node')
         } else {
-          console.log('save a node')
+          logger.info('save a node')
 
         }
       })
     }
 
     if (err) {
-      console.log(err)
+      logger.info(err)
     }
   })
 })
@@ -53,17 +52,17 @@ zwave.on('node added', (nodeid) => {
 
 zwave.on('node removed', (nodeid) => {
   ZedNode.remove({ 'nodeid': nodeid }, (err) => {
-    console.log('removing node from db')
+    logger.info('removing node from db')
     if (err) {
-      return console.log(err)
+      return logger.info(err)
     }
   })
-  console.log(`node ${ nodeid } removed`)
+  logger.info(`node ${ nodeid } removed`)
 })
 
 // Node Event
 zwave.on('node event', (nodeid, data) => {
-  console.log('node: %d event: Basic set %d', nodeid, data)
+  logger.info('node: %d event: Basic set %d', nodeid, data)
 })
 
 // Value added event
@@ -92,7 +91,7 @@ zwave.on('value added', (nodeid, comclass, value) => {
       node.markModified('classes')
       node.save((err) => {
         if (err) {
-          console.log('error updating node')
+          logger.info('error updating node')
         }
       })
 
@@ -115,7 +114,7 @@ zwave.on('value added', (nodeid, comclass, value) => {
       eventHandler(event, node)
     }
     if (err) {
-      console.log(err)
+      logger.info(err)
     }
   })
 })
@@ -126,7 +125,7 @@ zwave.on('value changed', (nodeid, comclass, value) => {
   ZedNode.findOne({ 'nodeid': nodeid }, (err, node) => {
     if (node) {
       // if we have a node
-      //  console.log('node%d: changed: %d:%s:%s->%s', nodeid, comclass
+      //  logger.info('node%d: changed: %d:%s:%s->%s', nodeid, comclass
       //  value['label'],
       //			node.classes[comclass][value.index]['value'],
       //				value['value'])
@@ -150,7 +149,7 @@ zwave.on('value changed', (nodeid, comclass, value) => {
       node.markModified('classes')
       node.save((err) => {
         if (err) {
-          console.log('error updating node')
+          logger.info('error updating node')
         }
       })
 
@@ -174,7 +173,7 @@ zwave.on('value changed', (nodeid, comclass, value) => {
       zwave.writeConfig()
     }
     if (err) {
-      console.log(err)
+      logger.info(err)
     }
   })
 })
@@ -197,16 +196,16 @@ zwave.on('node ready', (nodeid, nodeinfo) => {
       node.ready = true
       node.save((err) => {
         if (err) {
-          console.log('error saving node')
+          logger.info('error saving node')
         }
-        console.log('node saved and ready')
+        logger.info('node saved and ready')
       })
 
       if (node.classes) {
         for (let comclass in node.classes) {
           if (comclass) {
             if (comclass == 37) {
-              console.log(`Enable Poll polling on switch: ${ nodeid}`)
+              logger.info(`Enable Poll polling on switch: ${ nodeid}`)
               // zwave.enablePoll({ node_id: nodeid, class_id: 37, instance:1, index:0}, 1)
               zwave.disablePoll({ 'node_id': nodeid, 'class_id': 37, 'instance': 1, 'index': 0 })
 
@@ -215,10 +214,10 @@ zwave.on('node ready', (nodeid, nodeinfo) => {
 
           let values = node.classes[ comclass ]
 
-          console.log('node %d: class %d', nodeid, comclass)
+          logger.info('node %d: class %d', nodeid, comclass)
           for (let idx in values) {
             if (idx) {
-              console.log(
+              logger.info(
                 'node%d:   %s=%s',
                 nodeid,
                 values[ idx ].label,
@@ -229,7 +228,7 @@ zwave.on('node ready', (nodeid, nodeinfo) => {
       }
     }
     if (err) {
-      console.log(err)
+      logger.info(err)
     }
   })
   zwave.writeConfig()
@@ -239,33 +238,33 @@ zwave.on('node ready', (nodeid, nodeinfo) => {
 zwave.on('notification', (nodeid, notif) => {
   switch (notif) {
   case 0:
-    console.log('node %d: message complete', nodeid)
+    logger.info('node %d: message complete', nodeid)
     break
   case 1:
-    console.log('node %d: timeout', nodeid)
+    logger.info('node %d: timeout', nodeid)
     break
   case 2:
-    console.log('node %d: nop', nodeid)
+    logger.info('node %d: nop', nodeid)
     break
   case 3:
-    console.log('node %d: node awake', nodeid)
+    logger.info('node %d: node awake', nodeid)
     break
   case 4:
-    console.log('node %d: node sleep', nodeid)
+    logger.info('node %d: node sleep', nodeid)
     break
   case 5:
-    console.log('node %d: node dead', nodeid)
+    logger.info('node %d: node dead', nodeid)
     break
   case 6:
-    console.log('node %d: node alive', nodeid)
+    logger.info('node %d: node alive', nodeid)
     break
   default:
-    console.log('unknown')
+    logger.info('unknown')
   }
 })
 
 zwave.on('scan complete', () => {
-  console.log('====> scan complete, hit ^C to finish.')
+  logger.info('====> scan complete, hit ^C to finish.')
   // set dimmer node 5 to 50%
   // zwave.setValue(5,38,1,0,50)
   // Add a new device to the ZWave controller
@@ -278,7 +277,7 @@ zwave.on('scan complete', () => {
 })
 
 zwave.on('controller command', (n, rv, st, msg) => {
-  console.log('controller commmand feedback: %s node==%d, retval=%d,state=%d',
+  logger.info('controller commmand feedback: %s node==%d, retval=%d,state=%d',
     msg, n, rv, st)
 })
 
@@ -286,7 +285,7 @@ zwave.on('controller command', (n, rv, st, msg) => {
 zwave.connect('/dev/cu.usbmodem14741')
 
 process.on('SIGINT', () => {
-  console.log('disconnecting...')
+  logger.info('disconnecting...')
 
   zwave.disconnect('/dev/cu.usbmodem14741')
   process.exit()
