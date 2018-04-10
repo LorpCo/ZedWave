@@ -1,6 +1,6 @@
 {
   "name": "zwaveserver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js Zwave Controller",
   "repository": {
     "type": "git",
@@ -8,31 +8,41 @@
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon -w src --exec \"babel-node src --presets es2015,stage-0\"",
+    "build": "babel src -s -D -d dist --presets es2015,stage-0",
+    "start": "node dist",
+    "prestart": "npm run -s build",
+    "test": "eslint src"
   },
   "author": "Jody Albritton",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
+    "body-parser": "^1.18.2",
+    "config": "^1.29.4",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
     "minimist": "*",
-    "mongoose": "^4.11.3",
-    "openzwave-shared": "^1.4.0",
+    "mongoose": "^4.13.11",
+    "npm": "^5.8.0",
+    "openzwave-shared": "^1.4.1",
+    "resource-router-middleware": "^0.7.0",
     "swagger-node-express": "~2.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
+    "babel-cli": "^6.26.0",
     "babel-core": "6.18.0",
     "babel-eslint": "^7.2.3",
     "babel-plugin-add-module-exports": "0.2.1",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-2": "6.18.0",
-    "babel-register": "^6.24.1",
-    "eslint": "^4.1.0",
-    "eslint-config-airbnb-base": "^7.2.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-watch": "^3.1.2",
-    "nodemon": "^1.11.0"
+    "babel-register": "^6.26.0",
+    "eslint": "^4.17.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-watch": "^3.1.3",
+    "express-prettify": "0.0.10",
+    "morgan": "^1.9.0",
+    "nodemon": "^1.17.2",
+    "prettyjson": "^1.2.1"
   }
 }

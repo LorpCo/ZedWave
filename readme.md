@@ -15,58 +15,56 @@ Clone the Repo
 
 cd into the folder
 
-```
+``` console
 npm install
 ```
+
 Run in Debug Mode
 
-```
-node index.js
+``` console
+npm run dev
 ```
 
 Run as a daemon
 
-```
+``` console
 forver start index.js
 ```
-
-### Usage
-
-
-Browse to localhost:3000 to view the swagger docs.
-
 
 ### Sample routes
 
 Fetch all of the nodes
 
-```
+``` console
 GET /api/nodes
 ```
 
 Fetch a single node
-```
+
+```console
 GET /api/nodes/:nodeid
 ```
 
 Delete a single node
-```
+
+``` console
 DELETE /api/nodes/:nodeid
 ```
+
 Fetch a the classes for a node
 
-```
+``` console
 GET /api/nodes/:nodeid/classes
 ```
 
 Add a node to your zwave network
 
-```
+``` console
 POST /api/nodes/add
 ```
 
 Remove a node
 
-```
-POST server:3000/api/nodes/remove
+``` console
+POST /api/nodes/remove
 ```
