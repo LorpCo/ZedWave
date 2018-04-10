@@ -25,8 +25,7 @@
     "mongoose": "^4.13.11",
     "npm": "^5.8.0",
     "openzwave-shared": "^1.4.1",
-    "resource-router-middleware": "^0.7.0",
-    "swagger-node-express": "~2.0"
+    "resource-router-middleware": "^0.7.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
